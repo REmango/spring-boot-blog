@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.remango.blog.dao.ArticleDao">
+    <insert id="saveArticle" parameterType="com.remango.blog.entity.Article" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO article(
+        id,
+        article_id,
+        author,
+        article_title,
+        type,
+        summary,
+        categories,
+        content,
+        likes,
+        last_article_id,
+        next_article_id,
+        timeline,
+        create_time,
+        update_time,
+        visits
+        )
+        VALUE (
+        #{id},
+        #{articleId},
+        #{author},
+        #{articleTitle},
+        #{type},
+        #{summary},
+        #{categories},
+        #{content},
+        #{likes},
+        #{lastArticleId},
+        #{nextArticleId},
+        #{timeline},
+        #{createTime},
+        #{updateTime},
+        #{visits});
+    </insert>
+
+    <resultMap id="Article" type="com.remango.blog.entity.Article">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <id column="article_id" jdbcType="BIGINT" property="articleId" />
+        <result column="author" jdbcType="VARCHAR" property="author" />
+        <result column="article_title" jdbcType="VARCHAR" property="articleTitle" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="summary" jdbcType="VARCHAR" property="summary" />
+        <result column="categories" jdbcType="VARCHAR" property="categories" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="likes" jdbcType="INTEGER" property="likes" />
+        <result column="last_article_id" jdbcType="BIGINT" property="lastArticleId" />
+        <result column="next_article_id" jdbcType="BIGINT" property="nextArticleId" />
+        <result column="timeline" jdbcType="VARCHAR" property="timeline" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="visits" jdbcType="INTEGER" property="visits" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, article_id, author, article_title, type, summary, categories, likes, last_article_id,next_article_id,timeline, create_time, update_time, visits
+    </sql>
+
+    <select id="queryArticleListByKey" resultMap="Article">
+        SELECT <include refid="Base_Column_List" /> FROM article
+        <where>
+            <if test="key != null and key.trim() != ''">
+                author LIKE concat('%',#{key},'%') OR article_title LIKE concat('%',#{key},'%') OR categories LIKE concat('%',#{key},'%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        <if test="offset != null and limit != null">
+            limit ${offset - 1}, ${limit}
+        </if>
+    </select>
+
+    <select id="queryArticleListByTimeLine" resultMap="Article">
+        SELECT <include refid="Base_Column_List" /> FROM article
+        <where>
+            timeline = #{TimeLine}
+        </where>
+        ORDER BY create_time DESC
+        <if test="offset != null and limit != null">
+            limit ${offset - 1}, ${limit}
+        </if>
+    </select>
+
+    <select id="queryArticleListByVisits" resultMap="Article">
+        SELECT <include refid="Base_Column_List" /> FROM article
+        ORDER BY visits DESC
+        <if test="offset != null and limit != null">
+            limit ${offset - 1}, ${limit}
+        </if>
+    </select>
+
+    <select id="queryArticleTotalByTimeLine" resultType="int">
+        SELECT count(*) FROM article
+        <where>
+            timeline = #{TimeLine}
+        </where>
+    </select>
+
+    <select id="queryArticle" resultMap="Article">
+        SELECT * FROM article WHERE article_id = #{articleId} AND author = #{author}
+    </select>
+
+    <select id="queryArticleTotalByKey" resultType="int">
+        SELECT count(*) FROM article
+        <where>
+            <if test="key != null and key.trim() != ''">
+                author LIKE concat('%',#{key},'%') OR article_title LIKE concat('%',#{key},'%') OR categories LIKE concat('%',#{key},'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateArticleVisits" parameterType="map">
+        UPDATE article
+        <set>
+            visits = visits + 1
+        </set>
+        WHERE article_id = #{articleId} AND author = #{author}
+    </update>
+
+    <select id="queryPrePageId" resultMap="Article">
+        SELECT id FROM article ORDER BY create_time DESC limit 1
+    </select>
+
+    <select id="queryArticleInfoById" resultMap="Article">
+        SELECT id, article_id, author, article_title FROM article WHERE id = #{id}
+    </select>
+
+    <update id="updatePrePageNextId" parameterType="java.lang.Long">
+        UPDATE article
+        <set>
+            next_article_id = #{id}
+        </set>
+        ORDER BY create_time DESC limit 1
+    </update>
+
+
+</mapper>

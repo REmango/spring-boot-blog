@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.remango.blog.dao.LogDao">
+    <insert id="saveLog" parameterType="com.remango.blog.entity.Log" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO log(id, ip, operation, method, params, spend_time, create_time)
+        VALUE (#{id},#{ip}, #{operation}, #{method}, #{params}, #{spendTime}, #{createTime});
+    </insert>
+    <resultMap id="Log" type="com.remango.blog.entity.Log">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="ip" jdbcType="VARCHAR" property="ip" />
+        <result column="operation" jdbcType="VARCHAR" property="operation" />
+        <result column="method" jdbcType="VARCHAR" property="method" />
+        <result column="params" jdbcType="VARCHAR" property="params" />
+        <result column="spend_time" jdbcType="INTEGER" property="spendTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    <select id="queryLogList" resultMap="Log">
+        select * from log
+        <where>
+            <if test="key != null and key.trim() != ''">
+                ip like concat('%',#{key},'%') or operation like concat('%',#{key},'%')
+            </if>
+        </where>
+        order by create_time desc
+        <if test="offset != null and limit != null">
+            limit ${offset - 1}, ${limit}
+        </if>
+    </select>
+    <select id="queryLogTotal" resultType="int">
+        select count(*) from log
+        <where>
+            <if test="key != null and key.trim() != ''">
+                ip like concat('%',#{key},'%') or operation like concat('%',#{key},'%')
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

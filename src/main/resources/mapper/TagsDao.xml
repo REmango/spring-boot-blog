@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.remango.blog.dao.TagsDao">
+    <insert id="saveTags" parameterType="com.remango.blog.entity.Tags" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tags(id, tags_name, create_time)
+        VALUE (#{id}, #{tagsName}, #{createTime});
+    </insert>
+
+    <resultMap id="Tags" type="com.remango.blog.entity.Tags">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="tags_name" jdbcType="VARCHAR" property="tagsName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <select id="queryTagsList" resultMap="Tags">
+        select * from tags
+        order by create_time desc
+    </select>
+
+    <select id="queryTagsTotal" resultType="int">
+        select count(*) from tags
+    </select>
+
+</mapper>

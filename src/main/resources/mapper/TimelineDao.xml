@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.remango.blog.dao.TimelineDao">
+    <insert id="saveTimeline" parameterType="com.remango.blog.entity.Timeline" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO timeline(id, timeline, create_time)
+        VALUE (#{id}, #{timeline}, #{createTime});
+    </insert>
+
+    <resultMap id="Timeline" type="com.remango.blog.entity.Timeline">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="timeline" jdbcType="VARCHAR" property="timeline" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <select id="queryTimelineList" resultMap="Timeline">
+        select * from timeline order by create_time desc
+        <if test="offset != null and limit != null">
+            limit ${offset - 1}, ${limit}
+        </if>
+    </select>
+
+    <select id="queryTimelineListByName" resultMap="Timeline">
+        select * from timeline where timeline = #{name}
+    </select>
+
+    <select id="queryTimelineTotal" resultType="int">
+        select count(*) from timeline
+    </select>
+
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.remango.blog.dao.UserDao">
+    <insert id="saveUser" parameterType="com.remango.blog.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user(id, username, password, phone, gender, email, avatar_url, personal_profile, create_time, last_login_time)
+        VALUE (#{id}, #{username}, #{password}, #{phone}, #{gender}, #{email}, #{avatarUrl}, #{personalProfile}, #{createTime}, #{lastLoginTime});
+    </insert>
+    <resultMap id="User" type="com.remango.blog.entity.User">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="gender" jdbcType="VARCHAR" property="gender" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+        <result column="personal_profile" jdbcType="VARCHAR" property="personalProfile" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    </resultMap>
+    <resultMap id="CurrentUserInfo" type="com.remango.blog.entity.CurrentUserInfo">
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    </resultMap>
+    <select id="queryUserList" resultMap="User">
+        select * from user
+        <where>
+            <if test="username != null and username.trim() != ''">
+                username like concat('%',#{username},'%')
+            </if>
+        </where>
+        order by create_time desc
+        <if test="offset != null and limit != null">
+            limit ${offset - 1}, ${limit}
+        </if>
+    </select>
+
+    <select id="queryUserByName" resultMap="User">
+        select * from user where username =  #{username}
+    </select>
+
+    <select id="queryUserInfoByName" resultMap="CurrentUserInfo">
+        select username, avatar_url  from user where username =  #{username}
+    </select>
+
+    <select id="queryUserTotal" resultType="int">
+        select count(*) from user
+        <where>
+            <if test="username != null and username.trim() != ''">
+                username like concat('%',#{username},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
