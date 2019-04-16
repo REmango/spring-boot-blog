@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
         userPageList.setTotal(total);
         return userPageList;
     }
+
     @Override
     public void saveUser(User user){
         user.setCreateTime(new Date());

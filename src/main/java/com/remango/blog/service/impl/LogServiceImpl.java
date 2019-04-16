@@ -29,6 +29,8 @@ public class LogServiceImpl implements LogService {
         logPageList.setTotal(total);
         return logPageList;
     }
+
+
     @Override
     @Transactional
     public void saveLog(Log log) {

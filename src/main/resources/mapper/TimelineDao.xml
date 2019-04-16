@@ -16,18 +16,18 @@
     </resultMap>
 
     <select id="queryTimelineList" resultMap="Timeline">
-        select * from timeline order by create_time desc
+        SELECT * FROM timeline ORDER BY create_time DESC
         <if test="offset != null and limit != null">
             limit ${offset - 1}, ${limit}
         </if>
     </select>
 
     <select id="queryTimelineListByName" resultMap="Timeline">
-        select * from timeline where timeline = #{name}
+        SELECT * FROM timeline WHERE timeline = #{name}
     </select>
 
     <select id="queryTimelineTotal" resultType="int">
-        select count(*) from timeline
+        SELECT count(*) FROM timeline
     </select>
 
 </mapper>

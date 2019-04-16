@@ -25,31 +25,31 @@
         <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
     </resultMap>
     <select id="queryUserList" resultMap="User">
-        select * from user
+        SELECT * FROM USER
         <where>
             <if test="username != null and username.trim() != ''">
-                username like concat('%',#{username},'%')
+                username LIKE concat('%',#{username},'%')
             </if>
         </where>
-        order by create_time desc
+        ORDER BY create_time DESC
         <if test="offset != null and limit != null">
             limit ${offset - 1}, ${limit}
         </if>
     </select>
 
     <select id="queryUserByName" resultMap="User">
-        select * from user where username =  #{username}
+        SELECT * FROM USER WHERE username =  #{username}
     </select>
 
     <select id="queryUserInfoByName" resultMap="CurrentUserInfo">
-        select username, avatar_url  from user where username =  #{username}
+        SELECT username, avatar_url  FROM USER WHERE username =  #{username}
     </select>
 
     <select id="queryUserTotal" resultType="int">
-        select count(*) from user
+        SELECT count(*) FROM USER
         <where>
             <if test="username != null and username.trim() != ''">
-                username like concat('%',#{username},'%')
+                username LIKE concat('%',#{username},'%')
             </if>
         </where>
     </select>

@@ -17,6 +17,7 @@ import java.util.List;
 public class TimelineServiceImpl implements TimelineService {
     @Autowired
     private TimelineDao timelineDao;
+
     @Override
     public PageList<Timeline> queryTimelineList(Integer offset, Integer limit){
         PageList<Timeline> timelinePageList = new PageList<>();

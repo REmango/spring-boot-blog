@@ -11,7 +11,10 @@ import java.util.List;
  */
 
 public interface LogDao {
+
     void saveLog(Log log);
+
     List<Log> queryLogList(@Param("key") String key, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
     int queryLogTotal(@Param("key") String key);
 }

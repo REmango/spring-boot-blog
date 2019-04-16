@@ -33,7 +33,6 @@ public class MessageBoardServiceImpl  implements MessageBoardService {
         messageBoardPageList.setRows(messageBoardList);
         messageBoardPageList.setTotal(total);
 
-
         return messageBoardPageList;
     }
 

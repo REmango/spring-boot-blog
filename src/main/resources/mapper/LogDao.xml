@@ -18,22 +18,22 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     </resultMap>
     <select id="queryLogList" resultMap="Log">
-        select * from log
+        SELECT * FROM log
         <where>
             <if test="key != null and key.trim() != ''">
-                ip like concat('%',#{key},'%') or operation like concat('%',#{key},'%')
+                ip LIKE concat('%',#{key},'%') OR operation LIKE concat('%',#{key},'%')
             </if>
         </where>
-        order by create_time desc
+        ORDER BY create_time DESC
         <if test="offset != null and limit != null">
             limit ${offset - 1}, ${limit}
         </if>
     </select>
     <select id="queryLogTotal" resultType="int">
-        select count(*) from log
+        SELECT count(*) FROM log
         <where>
             <if test="key != null and key.trim() != ''">
-                ip like concat('%',#{key},'%') or operation like concat('%',#{key},'%')
+                ip LIKE concat('%',#{key},'%') OR operation LIKE concat('%',#{key},'%')
             </if>
         </where>
     </select>

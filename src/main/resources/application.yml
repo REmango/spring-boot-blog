@@ -12,7 +12,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/remango_blog?useSSL=true&verifyServerCertificate=false&serverTimezone=GMT%2B8
     username: remango_blog
-    password: 123456
+    password: zhengli
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:

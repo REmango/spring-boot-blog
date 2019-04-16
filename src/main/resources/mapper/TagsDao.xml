@@ -16,12 +16,12 @@
     </resultMap>
 
     <select id="queryTagsList" resultMap="Tags">
-        select * from tags
-        order by create_time desc
+        SELECT * FROM tags
+        ORDER BY create_time DESC
     </select>
 
     <select id="queryTagsTotal" resultType="int">
-        select count(*) from tags
+        SELECT count(*) FROM tags
     </select>
 
 </mapper>

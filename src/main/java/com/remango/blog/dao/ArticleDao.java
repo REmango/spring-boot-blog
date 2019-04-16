@@ -10,6 +10,7 @@ import java.util.Map;
  * Created by li on 2019/3/14.
  */
 public interface ArticleDao {
+
     Article queryArticle(@Param("articleId") Long articleId, @Param("author") String author);
 
     Article queryArticleInfoById(@Param("id") Long id);

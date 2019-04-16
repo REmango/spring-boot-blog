@@ -17,14 +17,14 @@
     </resultMap>
 
     <select id="queryMessageList" resultMap="MessageBoard">
-        select * from message_board order by create_time desc
+        SELECT * FROM message_board ORDER BY create_time DESC
         <if test="offset != null and limit != null">
             limit ${offset - 1}, ${limit}
         </if>
     </select>
 
     <select id="queryMessageBoardTotal" resultType="int">
-        select count(*) from message_board
+        SELECT count(*) FROM message_board
     </select>
 
 </mapper>
